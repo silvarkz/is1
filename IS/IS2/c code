@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <string.h>
+
+char* encryptRailFence(char* text, int key) {
+    char encrypted_string[1000] = "";
+    int check = 0;
+    int j = 0;
+    int row = key;
+    int cols = strlen(text);
+
+    char a[100][100];
+    for (int i = 0; i < cols; i++) {
+        if (j == 0 || j == key - 1) {
+            check = !check;
+        }
+        a[j][i] = text[i];
+
+        if (check)
+            j++;
+        else
+            j--;
+    }
+
+    for (int i = 0; i < row; i++) {
+        for (int k = 0; k < cols; k++) {
+            if (a[i][k] != 0)
+                strncat(encrypted_string, &a[i][k], 1);
+        }
+    }
+    
+    //printf("Encrypted Message:\n");
+    for (int i = 0; i < row; i++) {
+        for (int k = 0; k < cols; k++) {
+            if (a[i][k] != '\0')
+                printf("%c", a[i][k]);
+        }
+    }
+   
+    
+    return strdup(encrypted_string);
+}
+
+char* decryptRailfence(char* text, int key) {
+    char decryptedtext[1000] = "";
+    int check = 0;
+    int j = 0;
+    int row = key;
+    int cols = strlen(text);
+
+    char a[100][100];
+    for (int i = 0; i < cols; i++) {
+        if (j == 0 || j == key - 1) {
+            check = !check;
+        }
+        a[j][i] = '*';
+
+        if (check)
+            j++;
+        else
+            j--;
+    }
+
+    int index = 0;
+    check = 0;
+    for (int i = 0; i < row; i++) {
+        for (int k = 0; k < cols; k++) {
+            if (a[i][k] == '*' && index < cols) {
+                a[i][k] = text[index++];
+            }
+        }
+    }
+
+    j = 0;
+    for (int i = 0; i < cols; i++) {
+        if (j == 0 || j == key - 1) {
+            check = !check;
+        }
+        strncat(decryptedtext, &a[j][i], 1);
+
+        if (check)
+            j++;
+        else
+            j--;
+    }
+
+    return strdup(decryptedtext);
+}
+
+int main() {
+    char text[1000];
+    int key;
+
+    printf("Enter Text: ");
+    fgets(text, sizeof(text), stdin);
+    text[strcspn(text, "\n")] = '\0';
+
+    printf("Enter Key: ");
+    scanf("%d", &key);
+
+    printf("Encrypted Message:\n");
+    char* encryptedText = encryptRailFence(text, key);
+    printf("\n");
+
+    printf("Decrypted Message: ");
+    char* decryptedText = decryptRailfence(encryptedText, key);
+    printf("%s\n", decryptedText);
+
+    return 0;
+}

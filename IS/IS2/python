@@ -1,0 +1,87 @@
+def encrypt_rail_fence(text, key):
+    encrypted_string = ""
+    check = False
+    j = 0
+    row = key
+    cols = len(text)
+
+    a = [[""] * cols for _ in range(row)]
+
+    for i in range(cols):
+        if j == 0 or j == key - 1:
+            check = not check
+        a[j][i] = text[i]
+
+        if check:
+            j += 1
+        else:
+            j -= 1
+
+    for i in range(row):
+        for k in range(cols):
+            if a[i][k] != "":
+                encrypted_string += a[i][k]
+
+    for i in range(row):
+        for k in range(cols):
+            print(a[i][k], end=" ")
+        print()
+
+    return encrypted_string
+
+
+def decrypt_rail_fence(text, key):
+    decrypted_text = ""
+    check = False
+    j = 0
+    row = key
+    cols = len(text)
+
+    a = [[""] * cols for _ in range(row)]
+
+    for i in range(cols):
+        if j == 0 or j == key - 1:
+            check = not check
+        a[j][i] = "*"
+
+        if check:
+            j += 1
+        else:
+            j -= 1
+
+    index = 0
+    for i in range(row):
+        for k in range(cols):
+            if a[i][k] == "*" and index < cols:
+                a[i][k] = text[index]
+                index += 1
+
+    j = 0
+    for i in range(cols):
+        if j == 0 or j == key - 1:
+            check = not check
+        decrypted_text += a[j][i]
+
+        if check:
+            j += 1
+        else:
+            j -= 1
+
+    return decrypted_text
+
+
+def main():
+    text = input("Enter Text: ")
+    key = int(input("Enter Key: "))
+
+    print("Encrypted Message:")
+    encrypted_text = encrypt_rail_fence(text, key)
+    print("\n" + encrypted_text)
+
+    print("\nDecrypted Message:")
+    decrypted_text = decrypt_rail_fence(encrypted_text, key)
+    print(decrypted_text)
+
+
+if __name__ == "__main__":
+    main()

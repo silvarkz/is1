@@ -1,0 +1,21 @@
+class BitwiseOperators:
+    @staticmethod
+    def main(args):
+        str = "Hello World"
+
+        # AND each character in the string with 127
+        for i in range(len(str)):
+            c = ord(str[i])
+            c &= 127
+            print(chr(c), end='')
+        print()
+
+        # XOR each character in the string with 127
+        for i in range(len(str)):
+            c = ord(str[i])
+            c ^= 127
+            print(chr(c), end='')
+        print()
+
+
+BitwiseOperators.main(None)

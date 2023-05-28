@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Diffie-Hellman Key Exchange</title>
+</head>
+<body>
+  <h2>Diffie-Hellman Key Exchange</h2>
+  <hr>
+  <script>
+    // This program demonstrates the Diffie-Hellman Key Exchange algorithm
+
+    // Power function to calculate a^b mod p
+    function power(base, exponent, modulus) {
+      if (exponent == 1)
+        return base;
+      else
+        return (BigInt(base) ** BigInt(exponent)) % BigInt(modulus);
+    }
+
+    // Driver code
+    var prime, primitiveRoot, alicePrivateKey, bobPrivateKey, aliceGeneratedKey, bobGeneratedKey, sharedSecretAlice, sharedSecretBob;
+
+    // Both parties agree upon the public values: prime (P) and primitive root (G)
+    prime = 11;
+    document.write("The value of prime (P): " + prime + "<br>");
+
+    primitiveRoot = 7;
+    document.write("The value of primitive root (G): " + primitiveRoot + "<br>");
+
+    // Alice enters her private key (a)
+    alicePrivateKey = parseInt(prompt("Enter Alice's private key (a):"));
+    document.write("Alice's private key (a): " + alicePrivateKey + "<br>");
+
+    // Calculate the generated key for Alice
+    aliceGeneratedKey = power(primitiveRoot, alicePrivateKey, prime);
+
+    // Bob's private key is hardcoded
+    bobPrivateKey = 3;
+    document.write("Bob's private key (b): " + bobPrivateKey + "<br>");
+
+    // Calculate the generated key for Bob
+    bobGeneratedKey = power(primitiveRoot, bobPrivateKey, prime);
+
+    // Exchange the generated keys
+    // Alice receives Bob's generated key (bobGeneratedKey)
+    // Bob receives Alice's generated key (aliceGeneratedKey)
+
+    // Both parties calculate the shared secret key
+    sharedSecretAlice = power(bobGeneratedKey, alicePrivateKey, prime); // Secret key for Alice
+    sharedSecretBob = power(aliceGeneratedKey, bobPrivateKey, prime); // Secret key for Bob
+
+    document.write("Shared secret key for Alice: " + sharedSecretAlice + "<br>");
+    document.write("Shared secret key for Bob: " + sharedSecretBob + "<br>");
+  </script>
+</body>
+</html>
